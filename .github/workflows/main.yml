@@ -1,4 +1,4 @@
-name: Deploy to Surge
+name: Publicar Proyecto
 
 on:
   push:
@@ -10,14 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Clona el repositorio
+        uses: actions/checkout@v3
 
-    - name: Build and Deploy
-      run: |
-        # Configurar Surge.sh
-        npm install --global surge
-        surge token ${{ secrets.SURGE_TOKEN }} # Reemplazar <SURGE_API_KEY> con la API Key de Surge de cada estudiante
+      - name: Configura Node.js  
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  
 
-        # Desplegar en Surge.sh
-        surge --project ./ --domain https://ritzy-form.surge.sh --token $SURGE_TOKEN 
+      - name: Instala Surge       
+        run: npm install --global surge
+
+      - name: Publicar pagina
+        run: surge --project ./ --domain ${{ secrets.PAGINA_AXEL }}.surge.sh --token ${{ secrets.SURGE_API_KEY }}   
